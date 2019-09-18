@@ -2,7 +2,7 @@ Create table Office(
 OfficeCode varchar(5) Primary Key,
 PhoneNumber int(10),
 EmailAddress varchar(30),
-LocationID varchar(13) Foerign Key,
+LocationID varchar(13) Foreign Key,
 )
 
 Create table PhysicalLocation(
