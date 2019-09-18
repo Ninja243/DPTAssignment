@@ -21,7 +21,7 @@ Sender varchar(20) not null,
 Receiver varchar(20) not null,
 IDNumber numeric(11)
 constraint EID foreign key (IDNumber) references Person(IDNumber))
-
+--
 create table Registrar (
 RegistrarID numeric(9) primary key not null, 
 StaffNumber numeric(9) not null
