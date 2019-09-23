@@ -25,6 +25,16 @@ StudentNumber numeric(9) primary key not null,
 IDNumber numeric(11) null 
 constraint StID foreign key (IDNumber) references Person(IDnumber));
 
+CREATE TRIGGER STUD
+ON Student
+AFTER INSERT  
+AS
+BEGIN 
+INSERT INTO Student_BACKUP
+SELECT * FROM INSERTED
+END
+GO
+
 GO
 Create Procedure SpStud
 @StudentNumber numeric(9),
@@ -62,6 +72,8 @@ Sender varchar(20) not null,
 Receiver varchar(20) not null,
 IDNumber numeric(11)
 constraint EID foreign key (IDNumber) references Person(IDNumber))
+
+
 
 GO
 Create Procedure SpMail
@@ -279,8 +291,19 @@ PercentageMark numeric(3),
 DocumentID nvarchar(11)
 constraint CourID foreign key (CourseID) references Course(CourseCode),
 constraint CdD foreign key (DocumentID) references Document(DocumentID))
+
+CREATE TRIGGER MARKS
+ON SemesterMark
+AFTER INSERT  
+AS 
+BEGIN 
+INSERT INTO SemesterMark_BACKUP
+SELECT * FROM INSERTED
+END
 GO
-Create Procedure SpMark
+
+GO
+ALTER Procedure SpMark
 @MarkID int,
 @SemesterNumber int ,
 @CourseID nvarchar(6) ,
@@ -288,11 +311,20 @@ Create Procedure SpMark
 @DocumentID nvarchar(11)
 AS
 BEGIN
+IF @PercentageMark > 60
+BEGIN
+SELECT * FROM SemesterMark where PercentageMark = @PercentageMark
+END
+ELSE
+BEGIN
+Print 'NOT ELIGIBLE TO BE AWARDED THE DAAD SCHOLARSHIP'
+END
 SET NOCOUNT ON;
 INSERT INTO Mark (MarkID,SemesterNumber,PercentageMark,DocumentID)
 VALUES (@MarkID,@SemesterNumber,@CourseID,@PercentageMark,@DocumentID)
 END 
 GO
+
 create table ApplicationForm(
 AppID nvarchar(6) not null primary key,
 ApplicationID nvarchar(9) not null,
@@ -309,6 +341,16 @@ constraint mark foreign key (MarkID) references SemesterMark(MarkID),
 constraint Appid foreign key (ApplicationID) references Applicant(ApplicationID),
 constraint cccid foreign key (CLID) references CoverLetter(CLID)
 )
+CREATE TRIGGER APPFORM
+ON ApplicationForm
+AFTER INSERT  
+AS
+BEGIN 
+INSERT INTO ApplicationForm_BACKUP
+SELECT * FROM INSERTED
+END
+GO
+
 GO
 Create Procedure Spform
 @AppID nvarchar(6),
@@ -332,6 +374,16 @@ AdmID nvarchar(4) not null primary key,
 creation datetime not null,
 DocumentID nvarchar(11) not null
 constraint AmintD foreign key (DocumentID) references Document(DocumentID))
+
+CREATE TRIGGER PROOF_LETTER
+ON AdimittanceLetter
+AFTER INSERT  
+AS 
+BEGIN 
+INSERT INTO AdimittanceLetter_BACKUP
+SELECT * FROM INSERTED
+END
+GO
 GO
 Create Procedure SpAdm
 @AdmID nvarchar(4),
@@ -376,7 +428,48 @@ Create Procedure SpFicer
 AS
 BEGIN
 SET NOCOUNT ON;
-INSERT INTO Ficer (OfficeNumber,OfficePhoneNumber,EmailAddress)
+INSERT INTO Office (OfficeNumber,OfficePhoneNumber,EmailAddress)
 VALUES (@OfficeNumber,@OfficePhoneNumber,@EmailAddress)
 END 
 GO
+Create table PhysicalLocation (LocationID varchar(13) not null primary key,
+LDescription text,
+Logitude decimal,
+Latitude decimal,
+Erf int not null,
+Street varchar(20) not null,
+Suburb varchar(20) not null,
+City varchar(20),
+Region varchar(20),
+Country varchar(20))
+
+Create table InstituitionOffice (OfficeNumber int not null,
+InstitutionID numeric(4) not null
+Constraint InstK Foreign key (InstitutionID) references Institution(InstitutionID),
+Constraint OfficeK foreign key (OfficeNumber) references Office(OfficeNumber))
+
+alter table Office add LocationID varchar(13) not null
+constraint LocOffice foreign key (LocationID) references PhysicalLocation(LocationID) 
+
+alter table Email alter column IDnumber numeric(11) not null
+
+alter table person alter column dateofbirth date not null
+
+alter table person alter column firstname varchar(20) not null
+
+alter table person alter column lastname varchar(20) not null
+
+alter table Student alter column IDnumber numeric(11) not null
+
+alter table Lecturer alter column IDnumber numeric(11) not null
+
+alter table Department alter column DepartmentName varchar(20) not null
+
+alter table policeClearance alter column creationdate datetime not null
+
+alter table rawfile alter column filename varchar(20) not null
+
+alter table course alter column nql int not null
+alter table semestermark alter column PercentageMark numeric(3)not null
+alter table semestermark alter column DocumentID nvarchar(11) not null
+alter table office alter column EmailAddress varchar(20) not null
