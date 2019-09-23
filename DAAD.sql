@@ -470,6 +470,9 @@ alter table policeClearance alter column creationdate datetime not null
 alter table rawfile alter column filename varchar(20) not null
 
 alter table course alter column nql int not null
+                                                                
 alter table semestermark alter column PercentageMark numeric(3)not null
+                                                                
 alter table semestermark alter column DocumentID nvarchar(11) not null
+                                                                
 alter table office alter column EmailAddress varchar(20) not null
