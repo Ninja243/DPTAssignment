@@ -7,7 +7,7 @@ create table Person
     IDNumber numeric(11) primary key not null,
     Firstname varchar(20) not null,
     Lastname varchar(20) not null,
-    DateOFBirth date not null
+    DateOfBirth date not null
 );
 
 create table Student

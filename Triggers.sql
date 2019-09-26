@@ -1,0 +1,45 @@
+-- Triggers.sql
+-- Contains triggers that run when a certain action has been performed
+CREATE TRIGGER STUD
+ON Student
+AFTER INSERT  
+AS
+BEGIN
+    INSERT INTO Student_BACKUP
+    SELECT *
+    FROM INSERTED
+END
+GO
+
+CREATE TRIGGER MARKS
+ON SemesterMark
+AFTER INSERT  
+AS 
+BEGIN
+    INSERT INTO SemesterMark_BACKUP
+    SELECT *
+    FROM INSERTED
+END
+GO
+
+CREATE TRIGGER APPFORM
+ON ApplicationForm
+AFTER INSERT  
+AS
+BEGIN
+    INSERT INTO ApplicationForm_BACKUP
+    SELECT *
+    FROM INSERTED
+END
+GO
+
+CREATE TRIGGER PROOF_LETTER
+ON AdimittanceLetter
+AFTER INSERT  
+AS 
+BEGIN
+    INSERT INTO AdimittanceLetter_BACKUP
+    SELECT *
+    FROM INSERTED
+END
+GO
