@@ -34,7 +34,7 @@ create table Student
 
     IDNumber numeric(11) not null,
 
-    constraint StID foreign key (IDNumber) references Person(IDNumber)
+    constraint StID foreign key (IDNumber) references Person(IDNumber) ON DELETE CASCADE
 
 );
 
@@ -48,7 +48,7 @@ create table Lecturer
 
     IDNumber numeric(11) not null,
 
-    constraint LeID foreign key (IDNumber) references Person(IDNumber)
+    constraint LeID foreign key (IDNumber) references Person(IDNumber) ON DELETE CASCADE
 
 );
 
@@ -70,7 +70,7 @@ create table Email
 
     IDNumber numeric(11) not null,
 
-    constraint EID foreign key (IDNumber) references Person(IDNumber)
+    constraint EID foreign key (IDNumber) references Person(IDNumber) ON DELETE CASCADE
 
 );
 
@@ -84,7 +84,7 @@ create table Registrar
 
     StaffNumber numeric(9) not null,
 
-    constraint RID foreign key (StaffNumber) references Lecturer(StaffNumber)
+    constraint RID foreign key (StaffNumber) references Lecturer(StaffNumber) ON DELETE CASCADE
 
 );
 
@@ -114,9 +114,9 @@ create table Coordinator
 
     StaffNumber Numeric(9) not null,
 
-    constraint InsID foreign key (InstitutionID) references Institution(InstitutionID),
+    constraint InsID foreign key (InstitutionID) references Institution(InstitutionID) ON DELETE CASCADE,
 
-    constraint ScID foreign key (StaffNumber) references Lecturer(StaffNumber)
+    constraint ScID foreign key (StaffNumber) references Lecturer(StaffNumber) ON DELETE CASCADE
 
 );
 
@@ -140,7 +140,7 @@ create table Document
 
     Description text null,
 	FIleID int not null,
-    constraint Did foreign key (FileID) references RawFile(FileID)
+    constraint Did foreign key (FileID) references RawFile(FileID) ON DELETE CASCADE
 
 );
 
@@ -152,7 +152,7 @@ create table Passport
 
     DocumentID nvarchar(11) not null,
 
-    constraint PaID foreign key (DocumentID) references Document(DocumentID)
+    constraint PaID foreign key (DocumentID) references Document(DocumentID) ON DELETE CASCADE
 
 );
 
@@ -170,7 +170,7 @@ create table PoliceClearance
 
     DocumentID nvarchar(11) not null,
 
-    constraint PoID foreign key (DocumentID) references Document(DocumentID)
+    constraint PoID foreign key (DocumentID) references Document(DocumentID) ON DELETE CASCADE
 
 );
 
@@ -182,7 +182,7 @@ create table Applicant
 
     StudentNumber numeric(9) not null,
 
-    constraint AaID foreign key (StudentNumber) references Student(StudentNumber)
+    constraint AaID foreign key (StudentNumber) references Student(StudentNumber) ON DELETE CASCADE
 
 );
 
@@ -198,9 +198,9 @@ create table CoverLetter
 
     DocumentID nvarchar(11) not null,
 
-    constraint CleID foreign key (StudentNumber) references Student(StudentNumber),
+    constraint CleID foreign key (StudentNumber) references Student(StudentNumber) ON DELETE CASCADE,
 
-    constraint CID foreign key (DocumentID) references Document(DocumentID)
+    constraint CID foreign key (DocumentID) references Document(DocumentID) ON DELETE CASCADE
 
 );
 
@@ -230,7 +230,7 @@ create table Course
 
     DepartmentID nvarchar(4),
 
-    constraint DaID foreign key (DepartmentID) references Department(DepartmentID)
+    constraint DaID foreign key (DepartmentID) references Department(DepartmentID) ON DELETE CASCADE
 
 );
 
@@ -250,9 +250,9 @@ create table SemesterMark
 
     DocumentID nvarchar(11) not null,
 
-    constraint CourID foreign key (CourseID) references Course(CourseCode),
+    constraint CourID foreign key (CourseID) references Course(CourseCode) ON DELETE CASCADE,
 
-    constraint CdD foreign key (DocumentID) references Document(DocumentID)
+    constraint CdD foreign key (DocumentID) references Document(DocumentID) ON DELETE CASCADE
 
 );
 
@@ -272,7 +272,7 @@ create table AdmittanceLetter
 
     DocumentID nvarchar(11) not null,
 
-    constraint AmintD foreign key (DocumentID) references Document(DocumentID)
+    constraint AmintD foreign key (DocumentID) references Document(DocumentID) ON DELETE CASCADE
 
 );
 
@@ -294,17 +294,17 @@ create table ApplicationForm
 
     MarkID int not null,
 
-    constraint Adiml foreign key (AdmID) references AdmittanceLetter(AdmID),
+    constraint Adiml foreign key (AdmID) references AdmittanceLetter(AdmID) ON DELETE CASCADE,
 
-    constraint clearID foreign key (ClearanceID) references PoliceClearance(ClearanceID),
+    constraint clearID foreign key (ClearanceID) references PoliceClearance(ClearanceID) ON DELETE CASCADE,
 
-    constraint pasid foreign key (PassportNumber) references Passport(PassportNumber),
+    constraint pasid foreign key (PassportNumber) references Passport(PassportNumber) ON DELETE CASCADE,
 
-    constraint mark foreign key (MarkID) references SemesterMark(MarkID),
+    constraint mark foreign key (MarkID) references SemesterMark(MarkID) ON DELETE CASCADE,
 
-    constraint Appid foreign key (ApplicationID) references Applicant(ApplicationID),
+    constraint Appid foreign key (ApplicationID) references Applicant(ApplicationID) ON DELETE CASCADE,
 
-    constraint cccid foreign key (CLID) references CoverLetter(CLID)
+    constraint cccid foreign key (CLID) references CoverLetter(CLID) ON DELETE CASCADE
 
 );
 
@@ -321,11 +321,11 @@ create table HeadOfDepartment
 
     DepartmentID nvarchar(4)not null,
 
-    constraint hodiD foreign key (CourseCode) references Course(CourseCode),
+    constraint hodiD foreign key (CourseCode) references Course(CourseCode) ON DELETE CASCADE,
 
-    constraint hodiDD foreign key (StaffNumber) references Lecturer(StaffNumber),
+    constraint hodiDD foreign key (StaffNumber) references Lecturer(StaffNumber) ON DELETE CASCADE,
 
-    constraint hodSID foreign key (DepartmentID) references Department(DepartmentID)
+    constraint hodSID foreign key (DepartmentID) references Department(DepartmentID) ON DELETE CASCADE
 
 );
 
@@ -371,7 +371,7 @@ create table Office
 
     LocationID varchar(13) not null,
 
-    constraint LocOffice foreign key (LocationID) references PhysicalLocation(LocationID)
+    constraint LocOffice foreign key (LocationID) references PhysicalLocation(LocationID) ON DELETE CASCADE
 
 );
 
@@ -383,8 +383,8 @@ Create table InstituitionOffice
 
     InstitutionID numeric(4) not null,
 
-    constraint InstK Foreign key (InstitutionID) references Institution(InstitutionID),
+    constraint InstK Foreign key (InstitutionID) references Institution(InstitutionID) ON DELETE CASCADE,
 
-    constraint OfficeK foreign key (OfficeNumber) references Office(OfficeNumber)
+    constraint OfficeK foreign key (OfficeNumber) references Office(OfficeNumber) ON DELETE CASCADE
 
 );
