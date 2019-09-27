@@ -2,9 +2,9 @@
 -- Defines the tables used in our database
 -- TODO, foreign key constraints are weird
 
--- Create the database 
+-- Create the database if it does not already exist
 CREATE DATABASE ScholarshipHelperDB;
-GO
+Go
 USE ScholarshipHelperDB;
 
 
@@ -296,15 +296,16 @@ create table ApplicationForm
 
     constraint Adiml foreign key (AdmID) references AdmittanceLetter(AdmID) ON DELETE CASCADE,
 
-    constraint clearID foreign key (ClearanceID) references PoliceClearance(ClearanceID) ON DELETE CASCADE,
+	-- Prevent a cascade cascade
+    constraint clearID foreign key (ClearanceID) references PoliceClearance(ClearanceID) ON DELETE NO ACTION,
 
-    constraint pasid foreign key (PassportNumber) references Passport(PassportNumber) ON DELETE CASCADE,
+    constraint pasid foreign key (PassportNumber) references Passport(PassportNumber) ON DELETE NO ACTION,
 
-    constraint mark foreign key (MarkID) references SemesterMark(MarkID) ON DELETE CASCADE,
+    constraint mark foreign key (MarkID) references SemesterMark(MarkID) ON DELETE NO ACTION,
 
     constraint Appid foreign key (ApplicationID) references Applicant(ApplicationID) ON DELETE CASCADE,
 
-    constraint cccid foreign key (CLID) references CoverLetter(CLID) ON DELETE CASCADE
+    constraint cccid foreign key (CLID) references CoverLetter(CLID) ON DELETE No Action
 
 );
 
@@ -321,7 +322,7 @@ create table HeadOfDepartment
 
     DepartmentID nvarchar(4)not null,
 
-    constraint hodiD foreign key (CourseCode) references Course(CourseCode) ON DELETE CASCADE,
+    constraint hodiD foreign key (CourseCode) references Course(CourseCode) ON DELETE No action,
 
     constraint hodiDD foreign key (StaffNumber) references Lecturer(StaffNumber) ON DELETE CASCADE,
 
