@@ -11,11 +11,9 @@
             left_action_items: [['arrow-left', lambda x: root.on_back_pressed()]]
 	    BoxLayout:
 			orientation: "vertical"
-	        height: "60dp"
-			elevation: 15
-	        size_hint_y: None
-			rows: 2
 			BoxLayout:
+			    size_hint_y: None
+	            height: "60dp"
 				orientation: "horizontal"
 				TextInput:
 				    size_hint_x: 20
@@ -26,11 +24,21 @@
 					id: searchButton
 					on_release: root.runSearch()
 					size_hint_x: 3
+			BoxLayout:
+			    size_hint_y: None
+	            height: "20dp"
+				orientation: "horizontal"
+                Label:
+                    id: resultText
+                    text_size: self.size
+                    text: ""
+                    markup: True
+                    color: utils.get_color_from_hex("#0f0f0f")
 			ScrollView:
-				orientation: "vertical"
 				do_scroll_x: False
-				size_hint: 0.5, 1
-				BoxLayout:
-					id: studentResult
+				size_hint: 1, 1
+				MDList:
 					orientation: "vertical"
-					
+					id: studentResult
+					cols: 1
+
