@@ -36,7 +36,7 @@ AS
 BEGIN
     SELECT *
     FROM Person
-    WHERE IDnumber = Concat('%',@ID,'%');
+    WHERE IDnumber = '%'+@ID+'%';
 END
 GO
 
@@ -69,7 +69,7 @@ BEGIN
 	if (@SearchString is not null) 
     SELECT Firstname, Lastname, IDNumber
     from Person
-    where Firstname like Concat('%',@SearchString,'%');;
+    where Firstname like '%'+@SearchString+'%';
 	else 
 	exec spGetAllFirstNames
 END
@@ -82,7 +82,7 @@ AS
 BEGIN
     SELECT Firstname, Lastname, IDNumber
     from Person
-    where Lastname like Concat('%',@SearchString,'%');
+    where Lastname like '%'+@SearchString+'%';
 END
 Go
 
@@ -124,7 +124,7 @@ Go
     BEGIN
         SELECT *
         From Student
-        WHERE StudentNumber = Concat('%',@StudentNumber,'%');;
+        WHERE StudentNumber = '%'+@StudentNumber+'%';
     END
 GO
 
@@ -135,7 +135,7 @@ AS
 BEGIN
     SELECT *
     FROM Student
-    WHERE IDNumber = Concat('%',@IDNumber,'%');;
+    WHERE IDNumber = '%'+@IDNumber+'%';
 END
 GO
 
