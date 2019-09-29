@@ -26,14 +26,26 @@ BEGIN
 END
 GO
 
+-- Get all First names in DB
+create Procedure spGetAllFirstNames
+AS
+BEGIN
+    SELECT Firstname
+    FROM Person;
+END
+Go
+
 -- Search for Person's first name
 create Procedure spSearchPersonFirstName
     @SearchString varchar
 AS
 BEGIN
+	if (@SearchString is not null) 
     SELECT Firstname, Lastname, IDNumber
     from Person
     where Firstname like @SearchString;
+	else 
+	exec spGetAllFirstNames
 END
 Go
 
@@ -48,14 +60,7 @@ BEGIN
 END
 Go
 
--- Get all First names in DB
-create Procedure spGetAllFirstNames
-AS
-BEGIN
-    SELECT Firstname
-    FROM Person;
-END
-Go
+
 
 -- Get all Last names in DB
 create Procedure spGetAllLastNames
@@ -84,10 +89,6 @@ BEGIN
 END
 Go
 
--- Get all information on people in db
-create PROCEDURE spGetAllPeopleInfo
-AS
-BEGIN
 
 
     -- Find Student with specific Student Number
@@ -153,13 +154,13 @@ END
 GO
 
 GO
-Create Procedure SpStud
+Create Procedure spInsertStudent
     @StudentNumber numeric(9),
     @IDNumber numeric(11)
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Stud
+    INSERT INTO  Student
         (StudentNumber,IDNumber)
     VALUES
         (@StudentNumber, @IDNumber)
@@ -167,16 +168,16 @@ END
 GO
 
 GO
-Create Procedure Splect
-    @SaffNumber numeric(9),
+Create Procedure spInsertLecturer
+    @StaffNumber numeric(9),
     @IDNumber numeric(11)
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  lect
-        (SaffNumber,IDNumber)
+    INSERT INTO  Lecturer
+        (StaffNumber,IDNumber)
     VALUES
-        (@SaffNumber, @IDNumber)
+        (@StaffNumber, @IDNumber)
 END 
 GO
 
@@ -190,7 +191,7 @@ Create Procedure SpMail
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Mail
+    INSERT INTO  Email
         (EmailID,EmailSubject,Sender,Receiver,IDNumber)
     VALUES
         (@EmailID, @EmailSubject, @Sender, @Receiver, @IDNumber)
@@ -204,7 +205,7 @@ Create Procedure SpReg
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Reg
+    INSERT INTO  Registrar
         (RegistrarID,StaffNumber)
     VALUES
         (@RegistrarID, @StaffNumber)
@@ -220,7 +221,7 @@ Create Procedure SpInsti
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Insti
+    INSERT INTO  Institution
         (InstitutionID,Name,Acronym)
     VALUES
         (@InstitutionID, @Name, @Acronym)
@@ -235,7 +236,7 @@ Create Procedure SpCoor
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Coor
+    INSERT INTO  Coordinator
         (CoordinatorID,InstitutionID,StaffNumber)
     VALUES
         (@CoordinatorID, @InstitutionID, @StaffNumber)
@@ -249,35 +250,20 @@ Create Procedure SpDocu
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Docu
+    INSERT INTO  Document
         (DocumentID,Description)
     VALUES
         (@DocumentID, @Description)
 END 
 GO
 
-GO
-Create Procedure SpBirth
-    @BCNumber numeric(30),
-    @DocumentID nvarchar(11)
-AS
-BEGIN
-    SET NOCOUNT ON;
-    INSERT INTO  Birth
-        (BCNumber,DocumentID)
-    VALUES
-        (@BCNumber, @DocumentID)
-END 
-GO
-
-GO
 Create Procedure SpPass
     @PassportNumber int,
     @DocumentID nvarchar(11)
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Pass
+    INSERT INTO  Passport
         (PassportNumber,DocumentID)
     VALUES
         (@PassportNumber, @DocumentID)
@@ -292,8 +278,8 @@ Create Procedure SpPolice
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Police
-        (CllearanceID,ExpiryDate,DocumentID)
+    INSERT INTO  PoliceClearance
+        (ClearanceID,ExpiryDate,DocumentID)
     VALUES
         (@CllearanceID, @ExpiryDate, @DocumentID)
 END 
@@ -307,7 +293,7 @@ Create Procedure SpRaw
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Raw
+    INSERT INTO  RawFile
         (FileID,Data,FileName)
     VALUES
         (@FileID, @Data, @FileName)
@@ -321,7 +307,7 @@ Create Procedure SpAppl
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Appl
+    INSERT INTO  Applicant
         (ApplicationID,StudentNumber)
     VALUES
         (@ApplicationID, @StudentNumber)
@@ -336,7 +322,7 @@ Create Procedure SpCover
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Cover
+    INSERT INTO  CoverLetter
         (CLID,StudentNumber,DocumentID)
     VALUES
         (@CLID, @StudentNumber, @DocumentID)
@@ -350,8 +336,8 @@ Create Procedure SpDept
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO  Dept
-        (DepaartmentID,DepartmentName)
+    INSERT INTO  Department
+        (DepartmentID,DepartmentName)
     VALUES
         (@DepaartmentID, @DepartmentName)
 END 
@@ -366,7 +352,7 @@ Create Procedure SpCos
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO Cos
+    INSERT INTO Course
         (CourseCode,DescriptionText,NQL,DepartmentID)
     VALUES
         (@CourseCode, @Description, @NQL, @DepartmentID)
@@ -374,7 +360,7 @@ END
 GO
 
 GO
-ALTER Procedure SpMark
+/*Create Procedure SpMark
     @MarkID int,
     @SemesterNumber int ,
     @CourseID nvarchar(6) ,
@@ -399,8 +385,7 @@ BEGIN
         (@MarkID, @SemesterNumber, @CourseID, @PercentageMark, @DocumentID)
 END 
 GO
-
-GO
+*/
 Create Procedure Spform
     @AppID nvarchar(6),
     @ApplicationID nvarchar(9),
@@ -412,8 +397,8 @@ Create Procedure Spform
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO form
-        (AppID,ApplicationID,CllearanceID,PassportNumber,CLID,AdmID,MarkID)
+    INSERT INTO ApplicationForm
+        (AppID,ApplicationID,ClearanceID,PassportNumber,CLID,AdmID,MarkID)
     VALUES
         (@AppID, @ApplicationID, @CllearanceID, @PassportNumber, @CLID, @AdmID, @MarkID)
 END 
@@ -427,7 +412,7 @@ Create Procedure SpAdm
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO Adm
+    INSERT INTO AdmittanceLetter
         (AdmID,creation,DocumentID)
     VALUES
         (@AdmID, @creation, @DocumentID)
@@ -443,7 +428,7 @@ Create Procedure SpHod
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO Hod
+    INSERT INTO HeadOfDepartment
         (HoDID,StaffNumber,CourseCode,DepartmentID)
     VALUES
         (@HoDID, @StaffNumber, @CourseCode, @DepartmentID)

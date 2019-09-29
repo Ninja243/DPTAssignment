@@ -8,7 +8,7 @@ Go
 USE ScholarshipHelperDB;
 
 
-
+-- Skip above if DB exists
 
 create table Person
 

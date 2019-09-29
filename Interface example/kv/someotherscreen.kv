@@ -1,0 +1,17 @@
+# the name of the kv file doesn't really matter
+<SecondScreen>:
+    GridLayout:
+        rows: 2
+        MDToolbar:
+            id: toolbar
+            title: "Second screen"
+            md_bg_color: app.theme_cls.primary_color
+            background_palette: 'Primary'
+            background_hue: '500'
+            elevation: 10
+            right_action_items: [['dots-vertical', lambda x: ""]]
+            # call the method to go back
+            left_action_items: [['arrow-left', lambda x: root.on_back_pressed()]]
+        BoxLayout:
+            orientation: 'vertical'
+            padding: [10,50,10,50]
