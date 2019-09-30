@@ -13,13 +13,13 @@
             rows: 2
             cols: 3
             orientation: 'vertical'
-            padding: [20,200,20,200]
-            Button:
+            padding: [40,200,40,200]
+            MDRaisedButton:
                 text:"View Scholarship Applicants"
                 on_release:
                     app.manage_screens("view_screen", "add")
                     app.change_screen("view_screen")
-			Button:
+			MDRaisedButton:
                 text:"Add Scholarship Applicants"
                 on_release:
                     app.manage_screens("add_screen", "add")
