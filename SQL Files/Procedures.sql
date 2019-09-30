@@ -31,12 +31,12 @@ GO
 
 -- Find a person in the DB by searching for their ID number
 create PROCEDURE spFindPersonFromID
-    @ID numeric(11)
+    @ID varchar(11)
 AS
 BEGIN
     SELECT *
     FROM Person
-    WHERE IDnumber = '%'+@ID+'%';
+    WHERE IDnumber = cast(@ID as numeric(11);
 END
 GO
 

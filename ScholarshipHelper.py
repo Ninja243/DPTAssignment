@@ -21,7 +21,7 @@ import datetime
 
 # Global variables start here
 hostname = socket.gethostname()
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + hostname + '\SQLEXPRESS;DATABASE=ScholarshipHelperDB;Trusted_Connection=yes;')
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + hostname + '\\SQLEXPRESS;DATABASE=ScholarshipHelperDB;Trusted_Connection=yes;')
 cursor = conn.cursor()
 # #Test if tables exist, if not, run the procedure to create them
 # # TODO
@@ -104,7 +104,9 @@ def insertPerson(idNumber, FirstName, Surname, dob):
 		FirstName = antiSQLi(FirstName)
 		Surname = antiSQLi(Surname)
 		dob = antiSQLi(dob)
-		cursor.execute("EXEC spAddPerson @PersonIDNumber=?, @PersonFirstname=?, @PersonLastname=?, @PersonDoB=?", idNumber, FirstName, Surname, dob)
+		print("@insert: "+str(idNumber)+" "+FirstName+" "+Surname+" "+str(dob))
+		p = (idNumber, FirstName, Surname, dob)
+		cursor.execute("EXEC spAddPerson @PersonIDNumber=?, @PersonFirstname=?, @PersonLastname=?, @PersonDoB=?", p)
 		cursor.commit()
 	except Exception as e:
 		print(str(e))
@@ -118,12 +120,29 @@ class AddScreen(Screen):
     def __init__(self, **kwargs):
         super(AddScreen, self).__init__(**kwargs)
         self.idNumDateConfLabel = self.ids["idNumDateConfLabel"]
+        self.snameTextField = self.ids["snameTextField"]
+        self.fnameTextField = self.ids["fnameTextField"]
+        self.idNumTextField = self.ids["idNumTextField"]
+        self.dateOfBirth = datetime.datetime.now()
+
+    def showDatePicker(self, *args):
+        try:
+            MDDatePicker(self.handleDate).open()
+        except AttributeError:
+            MDDatePicker(self.handleDate).open()
+    def handleDate(self, date):
+        self.dateOfBirth = date
+        self.updateDateLabel()
+        #print(self.dateOfBirth)
+
+    def addPerson(self, *args):
+        insertPerson(self.idNumTextField.text, self.fnameTextField.text, self.snameTextField.text, self.dateOfBirth)
 
     def on_enter(self, *args):
         self.updateDateLabel()
 
     def updateDateLabel(self, *args):
-        self.idNumDateConfLabel.text = datetime.datetime.strftime(UI.dateOfBirth,"%A, %d %B %Y")
+        self.idNumDateConfLabel.text = datetime.datetime.strftime(self.dateOfBirth,"%A, %d %B %Y")
 
     def on_back_pressed(self, *args):
         UI().change_screen("splash_screen")
@@ -207,7 +226,7 @@ class ViewScreen(Screen):
 
         self.h = 1
         self.studentResult.size = (200, 400)
-        print(result)
+        #print(result)
 
     applicantData = ListProperty()
 
@@ -243,10 +262,10 @@ class UI(App):
     sm = ScreenManager()
     currentID = 0
     # Variables for person to be added to DB
-    firstname = ""
-    lastname = ""
-    idnum = 0
-    dateOfBirth = datetime.datetime.now()
+    #firstname = ""
+    #lastname = ""
+    #idnum = 0
+    #dateOfBirth = datetime.datetime.now()
 
     # def change_screen(self, screen_name):
     #	if sm.has_screen(screen_name):
@@ -308,18 +327,7 @@ class UI(App):
                 print(e)
         return True
 
-    def showDatePicker(self, *args):
-        try:
-            MDDatePicker(self.handleDate).open()
-        except AttributeError:
-            MDDatePicker(self.handleDate).open()
-    def handleDate(self, date):
-        self.dateOfBirth = date
-        #TODOAddScreen.updateDateLabel()
-        print(self.dateOfBirth)
     
-    def addPerson(self, *args):
-        insertPerson(self.idnum, self.firstname, self.lastname, self.dateOfBirth)
         
 
 if __name__ == "__main__":
