@@ -7,11 +7,16 @@
 create PROCEDURE spFindPersonFromID
     @ID numeric(11)
 AS
-BEGIN
+BEGIN TRY
     SELECT *
     FROM Person
     WHERE IDnumber = @ID;
-END
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 GO
 
 -- Find a person in the DB by searching for their First Name and Surname
@@ -19,100 +24,163 @@ create PROCEDURE spFindPersonFromFirstLastName
     @Firstname varchar(20),
     @Lastname varchar(20)
 AS
-BEGIN
+BEGIN TRY
     SELECT *
     FROM Person
     WHERE Firstname = @Firstname AND Lastname = LastName;
-END
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 GO
 
 -- Search for Person's first name
 create Procedure spSearchPersonFirstName
     @SearchString varchar
 AS
-BEGIN
+BEGIN TRY
     SELECT Firstname, Lastname, IDNumber
     from Person
     where Firstname like @SearchString;
-END
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 Go
+
 
 -- Search for Person's last name
 create Procedure spSearchPersonLastName
     @SearchString varchar
 AS
-BEGIN
+BEGIN TRY
     SELECT Firstname, Lastname, IDNumber
     from Person
     where Lastname like @SearchString;
-END
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 Go
+
 
 -- Get all First names in DB
 create Procedure spGetAllFirstNames
 AS
-BEGIN
+BEGIN TRY
     SELECT Firstname
     FROM Person;
-END
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 Go
 
 -- Get all Last names in DB
 create Procedure spGetAllLastNames
 AS
-BEGIN
+BEGIN TRY
     SELECT Lastname
     FROM Person;
-END
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 GO
 
 -- Get all ID Numbers in DB
 create Procedure spGetAllIDNumbers
 AS
-BEGIN
+BEGIN TRY
     Select IDNumber
     from Person;
-END
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 GO
 
 -- Get all birthdays from DB
 create Procedure spGetAllBirthdays
 As
-BEGIN
+BEGIN TRY
     Select DateOfBirth
     from Person;
-END
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 Go
 
 -- Get all information on people in db
 create PROCEDURE spGetAllPeopleInfo
 AS
-BEGIN
+BEGIN TRY
 
 
     -- Find Student with specific Student Number
     create PROCEDURE spFindStudentStudentNumber
         @StudentNumber numeric(9)
     AS
-    BEGIN
+    BEGIN 
         SELECT *
         From Student
         WHERE StudentNumber = @StudentNumber;
-    END
+    END 
+	END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 GO
 
 -- Find Student with specific ID Number
 create PROCEDURE spFindStudentIDNumber
     @IDNumber numeric(11)
 AS
-BEGIN
+BEGIN TRY
     SELECT *
     FROM Student
     WHERE IDNumber = @IDNumber;
-END
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
 GO
 
--- Find Lecturer with Specific
+-- COUNT THE NUMBER OF STUDENTS IN THE DATABASE
+GO
+CREATE PROCEDURE COUNTstudents
+AS
+BEGIN TRY
+ SELECT COUNT(Student.StudentNumber) 
+ FROM Student
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrorMessage,
+		   ERROR_PROCEDURE() as ErrorProcedure,
+		   ERROR_NUMBER() as ErrorId;
+END CATCH
+GO
+
+-- SELECT STUDENT WITH AGE GROUP 
 
 
 
@@ -133,9 +201,7 @@ GO
 
 
 
-
-
--- Old procs here
+-- INSERT INTO PERSON
 GO
 Create Procedure SpPerson
     @idnumber numeric(11),
@@ -163,7 +229,7 @@ exec SpPerson
 @dateofbirth = '19930622';
 
 GO
-
+-- INSERT VALUES INTO STUDENT TABLE
 Create Procedure SpStud
     @StudentNumber numeric(9),
     @IDNumber numeric(11)
@@ -342,7 +408,6 @@ BEGIN CATCH
 		   ERROR_NUMBER() as ErrorId;
 END CATCH
 GO
-
 
 GO
 Create Procedure SpPolice
