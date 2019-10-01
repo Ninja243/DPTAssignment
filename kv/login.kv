@@ -1,0 +1,44 @@
+<LoginScreen>:
+	GridLayout:
+        rows: 2
+        MDToolbar:
+            id: toolbar
+            title: "Scholarship Helper Login"
+            md_bg_color: app.theme_cls.primary_color
+            background_palette: 'Primary'
+            background_hue: '500'
+            elevation: 10
+            right_action_items: [['dots-vertical', lambda x: ""]]
+		GridLayout:
+            rows: 2
+            cols: 3
+            orientation: 'vertical'
+            padding: [40,200,40,200]
+			BoxLayout:
+				orientation: "vertical"
+				Label:
+					text: "Username: "
+					markup: True
+					color: utils.get_color_from_hex("#0f0f0f")
+				MDTextField:
+					text:""
+					id: UsernameField
+			BoxLayout:
+				orientation: "vertical"
+				Label:
+					text: "Password"
+					markup: True
+					color: utils.get_color_from_hex("#0f0f0f")
+				MDTextField:
+					text:""
+					id: PasswordField
+			BoxLayout:
+				MDRaisedButton:
+					id: loginButton
+					text: "Log In"
+					on_release: root.Login()
+				Label:
+					text: ""
+					id: loginNotification
+					markup: True
+					color: utils.get_color_from_hex("#ff0f0f")

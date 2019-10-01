@@ -1,6 +1,17 @@
 -- Triggers.sql
 -- Contains triggers that run when a certain action has been performed
 
+create trigger TriggerAdminTableAudit
+on AdminTable
+after update,insert
+as
+begin
+	insert into AdminTableAudit (
+		AdminUsername, AdminPassword, UpdatedBy, UpdatedOn) select i.AdminUsername, i.AdminPassword, SUSER_SNAME(), GETDATE()
+		From AdminTable t inner join inserted i on t.AdminUsername=i.AdminUsername;
+end
+go
+
 create trigger TriggerPersonAudit
 on Person 
 after update,insert 
@@ -57,13 +68,13 @@ begin
 	AppID, 
 	ApplicationID, 
 	ClearanceID,
-	PassportID,
+	PassportNumber,
 	CLID,
 	MarkID,
 	AdmID,
 	UpdatedBy,
 	UpdatedOn) 
-	select i.AppID, i.ApplicationID, i.ClearanceID, i.PassportID, i.CLID, i.MarkID, i.AdmID,  SUSER_SNAME(), getdate() 
+	select i.AppID, i.ApplicationID, i.ClearanceID, i.PassportNumber, i.CLID, i.MarkID, i.AdmID,  SUSER_SNAME(), getdate() 
 	from ApplicationForm t inner join inserted i on t.AppID=i.AppID;
 end
 go
@@ -91,13 +102,12 @@ as
 begin 
 	insert into CourseAudit (
 	CourseCode, 
-	DescriptionText, 
 	NQL,
 	DepartmentID, 
 	UpdatedBy,
 	UpdatedOn) 
-	select i.CourseCode, i.DescriptionText, i.NQL, i.DepartmentID, SUSER_SNAME(), getdate() 
-	from Person t inner join inserted i on t.CourseCode=i.CourseCode;
+	select i.CourseCode, i.NQL, i.DepartmentID, SUSER_SNAME(), getdate() 
+	from Course t inner join inserted i on t.CourseCode=i.CourseCode;
 end
 go
 
@@ -138,12 +148,11 @@ after update,insert
 as 
 begin 
 	insert into DocumentAudit (
-	DocumentID, 
-	DocumentDescription, 
+	DocumentID,  
 	FileID,
 	UpdatedBy,
 	UpdatedOn) 
-	select i.DocumentID, i.DocumentDescription, i.FileID, SUSER_SNAME(), getdate() 
+	select i.DocumentID, i.FileID, SUSER_SNAME(), getdate() 
 	from Document t inner join inserted i on t.DocumentID=i.DocumentID;
 end
 go
@@ -158,13 +167,12 @@ begin
 	insert into EmailAudit (
 	EmailID, 
 	EmailSubject, 
-	EmailText,
 	Sender,
 	Receiver,
 	IDNumber,
 	UpdatedBy,
 	UpdatedOn) 
-	select i.EmailID, i.EmailSubject, i.EmailText, i.Sender, i.Receiver, i.IDNumber SUSER_SNAME(), getdate() 
+	select i.EmailID, i.EmailSubject, i.Sender, i.Receiver, i.IDNumber, SUSER_SNAME(), getdate() 
 	from Email t inner join inserted i on t.EmailID=i.EmailID;
 end
 go
@@ -256,7 +264,6 @@ as
 begin 
 	insert into PhysicalLocationAudit (
 	LocationID, 
-	LDescription, 
 	Longitude,
 	Latitude,
 	Erf,
@@ -267,12 +274,12 @@ begin
 	Country,
 	UpdatedBy,
 	UpdatedOn) 
-	select i.LocationID, i.LDescription, i.Longitude, i.Latitude, i.Erf, i.Street, i.Suburb, i.City, i.Region, i.Country, SUSER_SNAME(), getdate() 
+	select i.LocationID, i.Longitude, i.Latitude, i.Erf, i.Street, i.Suburb, i.City, i.Region, i.Country, SUSER_SNAME(), getdate() 
 	from PhysicalLocation t inner join inserted i on t.LocationID=i.LocationID;
 end
 go
 
-create trigger TriggerPassportClearanceAudit
+create trigger TriggerPoliceClearanceAudit
 on PoliceClearance 
 after update,insert 
 as 
@@ -308,7 +315,7 @@ end
 go
 
 
-create trigger tblTriggerAuditRecord
+create trigger TriggerRegistrarAudit
 on Registrar 
 after update,insert 
 as 

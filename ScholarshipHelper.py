@@ -54,7 +54,7 @@ Builder.load_string("""#:include kv/splashscreen.kv
 #:include kv/viewscreen.kv
 #:include kv/addscreen.kv
 #:include kv/studentinfo.kv
-
+#:include kv/login.kv
 #:import utils kivy.utils
 """)
 
@@ -106,8 +106,10 @@ def insertPerson(idNumber, FirstName, Surname, dob):
 		dob = antiSQLi(dob)
 		print("@insert: "+str(idNumber)+" "+FirstName+" "+Surname+" "+str(dob))
 		p = (idNumber, FirstName, Surname, dob)
-		cursor.execute("EXEC spAddPerson @PersonIDNumber=?, @PersonFirstname=?, @PersonLastname=?, @PersonDoB=?", p)
+		#Don't care about truncation of the date
+		cursor.execute("SET ANSI_WARNINGS OFF; EXEC spAddPerson @PersonIDNumber=?, @PersonFirstname=?, @PersonLastname=?, @PersonDoB=?", p)
 		cursor.commit()
+		cursor.execute("SET ANSI_WARNINGS ON;");
 	except Exception as e:
 		print(str(e))
 		
@@ -115,6 +117,38 @@ class ItemList(MDCard):
     def prepare_viewing_of_applicant(self):
         print(self.applicant_id)
 
+class LoginScreen(Screen):
+	def __init__(self, **kwargs):
+		super(LoginScreen, self).__init__(**kwargs)
+		self.PasswordField = self.ids["PasswordField"]
+		self.UsernameField = self.ids["UsernameField"]
+		self.loginNotification = self.ids["loginNotification"]
+		
+	def Login(self, *args):
+		# Get username and password
+		Username = self.UsernameField.text
+		Password = self.PasswordField.text
+		try:
+			if Username == "defaultAdmin":
+				if Password == "defaultPassword":
+					UI().manage_screens("splash_screen", "add")
+					UI().change_screen("splash_screen")
+					UI().manage_screens("login_screen", "remove")
+				else:
+					self.loginNotification.text = "Your details do not match a user in our system"
+			else:
+				self.loginNotification.text = "Your details do not match a user in our system"
+			if (conn.execute("EXEC spLogin @Username=?, @Password=?", Username, Password) == [] ):
+				self.loginNotification.text = "Your details do not match a user in our system"
+			else:
+				UI().manage_screens("splash_screen", "add")
+				UI().change_screen("splash_screen")
+				UI().manage_screens("login_screen", "remove")
+		except Exception as e:
+			self.loginNotification.text = str(e)
+	def on_back_pressed(self, *args):
+		conn.close()
+		exit()
 
 class AddScreen(Screen):
     def __init__(self, **kwargs):
@@ -278,7 +312,8 @@ class UI(App):
             "student_info": StudentInfo,
             "splash_screen": SplashScreen,
             "view_screen": ViewScreen,
-            "add_screen": AddScreen
+            "add_screen": AddScreen,
+            "login_screen": LoginScreen
 
         }
         try:
@@ -305,7 +340,7 @@ class UI(App):
         global sm
         self.bind(on_start=self.post_build_init)
         sm = ScreenManager(transition=SwapTransition())
-        sm.add_widget(SplashScreen(name="splash_screen"))
+        sm.add_widget(LoginScreen(name="login_screen"))
         return sm
 
     def post_build_init(self, ev):

@@ -2,20 +2,42 @@
 -- Contains procedure creation text ro be called by interface
 
 -- TODO Comment/doc
+--
+--SET ANSI_WARNINGS OFF;
+--insert into Person values (
+--1111, 
+--'Mweya', 
+--'Ruider', getdate());
+--insert into Person values (Cast(12345678123 as numeric(11)), Cast('Mweya' as varchar(20)), Cast('Ruider' as varchar(20)), Cast(GETDATE() as date));
+--select max(len(IDNumber)), max(len(Firstname)), max(len(Lastname)), max(len(DateOfBirth)) from Person
 
---insert into Person values (12345678123, 'Mweya', 'Ruider', GETDATE());
-
-
+create Procedure spLogin
+@Username varchar,
+@Password varchar
+AS
+Begin
+	Select * from AdminTable where AdminUsername = @Username AND AdminPassword = @Password
+END
+GO
 
 -- Add someone to the person table
 create Procedure spAddPerson
 @PersonIDNumber numeric(11),
-@PersonFirstname varchar,
-@PersonLastname varchar,
+@PersonFirstname varchar(20),
+@PersonLastname varchar(20),
 @PersonDoB datetime
 AS 
 Begin
-	insert into Person (IDNumber, Firstname, Lastname, DateOfBirth) Values (@PersonIDNumber, @PersonFirstname, @PersonLastname, @PersonDoB);
+	insert into Person (
+	IDNumber, 
+	Firstname, 
+	Lastname, 
+	DateOfBirth) 
+	Values (
+	@PersonIDNumber,
+	@PersonFirstname,
+	@PersonLastname,
+	@PersonDoB);
 END
 GO
 
@@ -36,7 +58,7 @@ AS
 BEGIN
     SELECT *
     FROM Person
-    WHERE IDnumber = cast(@ID as numeric(11);
+    WHERE IDnumber = cast(@ID as numeric(11));
 END
 GO
 
@@ -262,7 +284,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
     INSERT INTO  Institution
-        (InstitutionID,Name,Acronym)
+        (InstitutionID,InstitutionName,Acronym)
     VALUES
         (@InstitutionID, @Name, @Acronym)
 END 
@@ -291,7 +313,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
     INSERT INTO  Document
-        (DocumentID,Description)
+        (DocumentID,DocumentDescription)
     VALUES
         (@DocumentID, @Description)
 END 
@@ -334,7 +356,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
     INSERT INTO  RawFile
-        (FileID,Data,FileName)
+        (FileID,RawFileData,RawFileName)
     VALUES
         (@FileID, @Data, @FileName)
 END 

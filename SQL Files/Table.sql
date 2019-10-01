@@ -8,6 +8,20 @@ Go
 USE ScholarshipHelperDB;
 
 
+create table AdminTable (
+	UserID int Identity (1,1) primary key,
+	AdminUsername varchar,
+	AdminPassword varchar
+);
+
+create table AdminTableAudit (
+	AuditID int Identity (1,1) primary key,
+	AdminUsername varchar,
+	AdminPassword varchar,
+	UpdatedBy nvarchar(128),
+	UpdatedOn datetime
+);
+
 -- Skip above if DB exists
 
 create table Person
@@ -27,6 +41,9 @@ create table Person
 create table PersonAudit (
 	AuditID integer Identity (1,1) primary key, 
 	IDNumber numeric (11),
+	Firstname varchar,
+	Lastname varchar,
+	DateOfBirth datetime,
 	UpdatedBy nvarchar(128),
 	UpdatedOn datetime
 );
@@ -252,6 +269,7 @@ create table PoliceClearance
 create table PoliceClearanceAudit (
 	AuditID integer Identity (1,1) primary key, 
 	ClearanceID int,
+	ExpiryDate datetime,
 	CreationDate datetime,
 	DocumentID nvarchar(11),
 	UpdatedBy nvarchar(128),
@@ -567,7 +585,7 @@ Create table InstituitionOffice
 
 );
 
-create table InstitutionAudit (
+create table InstitutionOfficeAudit (
 	AuditID integer Identity (1,1) primary key, 
 	OfficeNumber int,
 	InstitutionID numeric(4),
