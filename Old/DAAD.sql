@@ -243,7 +243,7 @@ print 'Successfully added';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
