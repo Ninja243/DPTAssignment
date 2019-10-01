@@ -27,7 +27,7 @@ print 'Successfully added';
 END try
 begin catch
 rollback
-print 'an error occures, commit was interapted,not changes were made made';
+print 'an error occures, commit was interapted,no changes were made';
 throw
 end catch
 GO
