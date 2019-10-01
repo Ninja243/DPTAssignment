@@ -27,7 +27,7 @@ print 'Successfully added';
 END try
 begin catch
 rollback
-print 'an error occures, commit was interapted,not changes were made made';
+print 'An error occured, commit was interrupted,no changes were made';
 throw
 end catch
 GO
@@ -54,7 +54,7 @@ print 'successfully added'
 END try
 begin catch
 rollback
-print 'an error occures, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -79,7 +79,7 @@ print 'Added successfully'
 END try
 begin catch
 rollback
-print 'no changes made, an error occured';
+print 'No changes made, an error occured';
 throw
 end catch
 GO
@@ -112,7 +112,7 @@ print 'Email created successfully';
 END try
 begin catch
 rollback
-print 'an error occures, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -146,7 +146,7 @@ print 'added successfully';
 END try
 begin catch
 rollback
-print 'an error occures, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -196,7 +196,7 @@ print 'added successfully';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -219,7 +219,7 @@ print 'Successfully added';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -243,7 +243,7 @@ print 'Successfully added';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -269,7 +269,7 @@ print 'Successfully added';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -293,7 +293,7 @@ print 'successfully added';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -318,7 +318,7 @@ print 'successfully added';
 END try 
 begin catch
 rollback
-print 'an error occures, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -344,7 +344,7 @@ print 'Successfully added';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted. Please try again';
+print 'An error occured, commit was interrupted. Please try again';
 throw
 end catch
 GO
@@ -366,7 +366,7 @@ print 'Successfully added';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -393,7 +393,7 @@ print 'Successfully added';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -442,7 +442,7 @@ print 'Successefully added';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
@@ -492,7 +492,7 @@ print 'Successfully created';
 END try
 begin catch
 rollback
-print 'an error occured, commit was interapted';
+print 'An error occured, commit was interrupted';
 throw
 end catch
 GO
